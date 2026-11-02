@@ -9,3 +9,13 @@ def define_posicoes(linha, coluna, orientacao, tamanho):
             posicoes.append([linha, coluna + i])  # mantém a linha e aumenta a coluna -> O NAVIO CRESCE PARA A DIREITA
 
     return posicoes  # vai devolver a lista completa após terminar
+
+def preenche_frota(frota, nome_navio, linha, coluna, orientacao, tamanho):
+    posicoes = define_posicoes(linha, coluna, orientacao, tamanho)  # usa a função anterior para calcular as posições do novo navio
+
+    if nome_navio not in frota:  # olha se esse tipo de navio ainda não está no dicionário
+        frota[nome_navio] = []  # lista que vai guardar esses tipos de navios
+
+    frota[nome_navio].append(posicoes)  # vai adicionar o novo navio -> sem apagar os navios anteriores
+
+    return frota  # vai devolver a lista completa atualizada
