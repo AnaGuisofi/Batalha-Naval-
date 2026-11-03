@@ -32,3 +32,21 @@ def faz_jogada(tabuleiro, linha, coluna):
         tabuleiro[linha][coluna] = "-"  # marca que o tiro acertou a água
 
     return tabuleiro  # devolve o tabuleiro atualizado
+
+
+def posiciona_frota(frota): 
+    tabuleiro = []  # vai guardar as 10 linhas do tabuleiro
+
+    for i in range(10):  # repete a criação de uma linha 10 vezes
+        linha = [0] * 10  # cria uma nova linha com 10 casas vazias
+        tabuleiro.append(linha)  # adiciona essa linha ao tabuleiro 
+
+    for nome_navio in frota:  # percorre os tipos de embarcação
+        for navio in frota[nome_navio]:  # percorre cada navio desse tipo
+            for posicao in navio:  # percorre as posições ocupadas pelos navios
+                linha = posicao[0]  # primeiro número da posição -> linha
+                coluna = posicao[1]  # segundo número da posição -> coluna
+
+                tabuleiro[linha][coluna] = 1  # marca que tem um navio
+
+    return tabuleiro  # vai devolver o tabuleiro com os navios já posicionados
