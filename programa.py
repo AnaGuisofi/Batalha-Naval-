@@ -1,4 +1,4 @@
-from funcoes import posicao_valida, preenche_frota
+from funcoes import (posicao_valida, preenche_frota, posiciona_frota, monta_tabuleiros, faz_jogada, afundados)
 
 # cada tipo de navio tem uma lista no formato [tamanho, quantidade]
 embarcacoes = {
@@ -27,7 +27,7 @@ for nome_navio in embarcacoes:  # vai seguir a ordem das embarcações
             escolha = int(input("[1] Vertical [2] Horizontal >"))
 
             if escolha == 1:
-                orientacao = "vertical"  # converte 1 para o texto usado nas funções
+                orientacao = "vertical"  # converte 1 para o texto usado nas funções            
             else:
                 orientacao = "horizontal"  # converte 2 para horizontal
 
@@ -40,4 +40,71 @@ for nome_navio in embarcacoes:  # vai seguir a ordem das embarcações
 
         else: 
             print("Esta posição não está válida!")
-print(frota)  # exibe a frota completa e encerra o programa
+
+# FROTA FIXA DO OPONENTE:
+
+frota_oponente = {
+    "porta-aviões": [
+        [[9, 1], [9, 2], [9, 3], [9, 4]]
+    ],
+    "navio-tanque": [ 
+        [[6, 0], [6, 1], [6, 2]],
+        [[4, 3], [5, 3], [6, 3]]
+    ],
+    "contratorpedeiro": [
+        [[1, 6], [1, 7]],
+        [[0, 5], [1, 5]],
+        [[3, 6], [3, 7]]
+    ],
+    "submarino": [
+        [[2, 7]],
+        [[0, 6]],
+        [[9, 7]],
+        [[7, 6]]
+    ]
+}
+
+tabuleiro_jogador = posiciona_frota(frota)
+tabuleiro_oponente = posiciona_frota(frota_oponente)
+
+total_navios = 0  # quantos navios inimigos precisam ser afundados
+
+for nome_navio in frota_oponente:
+    total_navios += len(frota_oponente[nome_navio])  # conta apenas os navios, não as casas que eles ocupam
+
+# LOOP PRINCIPAL DOS ATAQUES:
+jogando = True  # vai manter a partida em andamento até a vitória
+
+while jogando: 
+    print(monta_tabuleiros(tabuleiro_jogador, tabuleiro_oponente))  # vai mostrar o tabuleiro do jogador e o do oponente com os navios escondidos
+
+    jogada_valida = False  # vai reiniciar a validação a cada rodada
+
+    while jogada_valida == False:
+        linha = int(input("Jogador, qual linha deseja atacar? "))
+
+        while linha < 0 or linha > 9:
+            print("Linha inválida!")
+            linha = int(input("Jogador, qual linha deseja atacar? "))
+
+        coluna = int(input("Jogador, qual coluna deseja atacar? "))
+
+        while coluna < 0 or coluna > 9:
+            print("Coluna inválida!")
+            coluna = int(input("Jogador, qual coluna deseja atacar? "))
+
+        if tabuleiro_oponente[linha][coluna] in ["X", "-"]:
+            print(
+                f"A posição linha {linha} e coluna {coluna} "
+                "já foi informada anteriormente!"
+            )  # jogada_valida continua False -> volta a perguntar linha e coluna
+
+        else:
+            jogada_valida = True  # coordenada liberada e ainda
+
+    tabuleiro_oponente = faz_jogada(tabuleiro_oponente, linha, coluna)  # registra o tiro -> 1/X ou 0/-
+
+    afundou = afundados(frota_oponente, tabuleiro_oponente)
+    if afundou == total_navios:
+        print("Parabéns! Você derrubou todos os navios do seu oponente!")
+        jogando = False  # encerra sem pedir outro ataque

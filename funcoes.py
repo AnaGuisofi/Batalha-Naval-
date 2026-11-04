@@ -101,3 +101,17 @@ def posicao_valida(frota, linha, coluna, orientacao, tamanho):
                     return False  # o novo navio sobreporia outro navio 
 
     return True  # vai devolver todas as posições que estão dentro do tabuleiro e estão livres
+
+
+
+# PARTE 7
+def monta_tabuleiros(tabuleiro_jogador, tabuleiro_oponente):
+    texto = ''
+    texto += '   0  1  2  3  4  5  6  7  8  9         0  1  2  3  4  5  6  7  8  9\n'
+    texto += '_______________________________      _______________________________\n'
+
+    for linha in range(len(tabuleiro_jogador)):
+        jogador_info = '  '.join([str(item) for item in tabuleiro_jogador[linha]])   # mostra todos os valores da linha do jogador, incluindo seus navios
+        oponente_info = '  '.join([info if str(info) in 'X-' else '0' for info in tabuleiro_oponente[linha]])    # mostra apenas os tiros no oponente; navios intactos aparecem como 0
+        texto += f'{linha}| {jogador_info}|     {linha}| {oponente_info}|\n'
+    return texto   # vai devolver o texto para ser exibido
