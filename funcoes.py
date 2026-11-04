@@ -1,3 +1,4 @@
+# PARTE 1
 def define_posicoes(linha, coluna, orientacao, tamanho):
     posicoes = []  #vai guardar as posições que o navio vai ocupar
 
@@ -12,6 +13,7 @@ def define_posicoes(linha, coluna, orientacao, tamanho):
 
 
 
+# PARTE 2
 def preenche_frota(frota, nome_navio, linha, coluna, orientacao, tamanho):
     posicoes = define_posicoes(linha, coluna, orientacao, tamanho)  # usa a função anterior para calcular as posições do novo navio
 
@@ -24,6 +26,7 @@ def preenche_frota(frota, nome_navio, linha, coluna, orientacao, tamanho):
 
 
 
+# PARTE 3
 def faz_jogada(tabuleiro, linha, coluna):
     if tabuleiro[linha][coluna] == 1:  # verifica se há navio na casa escolhida
         tabuleiro[linha][coluna] = "X"  # marca que acertou o navio
@@ -34,6 +37,8 @@ def faz_jogada(tabuleiro, linha, coluna):
     return tabuleiro  # devolve o tabuleiro atualizado
 
 
+
+# PARTE 4
 def posiciona_frota(frota): 
     tabuleiro = []  # vai guardar as 10 linhas do tabuleiro
 
@@ -50,3 +55,25 @@ def posiciona_frota(frota):
                 tabuleiro[linha][coluna] = 1  # marca que tem um navio
 
     return tabuleiro  # vai devolver o tabuleiro com os navios já posicionados
+
+
+
+# PARTE 5
+def afundados(frota, tabuleiro):
+    quantidade = 0  # naios afundados
+
+    for nome_navio in frota:  # passa pelos tipos de embarcação
+        for navio in frota[nome_navio]:  # vai analisar cada navio desse tipo
+            atingidas = 0  # zera a contagem de acertos para cada navio
+
+            for posicao in navio:  # percorre as posições desse navio
+                linha = posicao[0]  # pega a linha da posição
+                coluna = posicao[1]  # pega a coluna da posição
+
+                if tabuleiro[linha][coluna]  == "X":
+                    atingidas += 1  # pra contar mais uma parte atingida
+
+            if atingidas == len(navio):  # vai verificar se todas as partes foram atingidas
+                quantidade += 1  # pra contar mais um navio afundado
+
+    return quantidade  # vai devolver o total de navios afundados 
