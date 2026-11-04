@@ -77,3 +77,27 @@ def afundados(frota, tabuleiro):
                 quantidade += 1  # pra contar mais um navio afundado
 
     return quantidade  # vai devolver o total de navios afundados 
+
+
+
+# PARTE 6 
+def posicao_valida(frota, linha, coluna, orientacao, tamanho):
+    posicoes = define_posicoes(linha, coluna, orientacao, tamanho)  # vai calcular as posições que o novo navio ocuparia
+
+    for posicao in posicoes:  # verifica cada posição do novo navio
+        linha_atual = posicao[0]  # pega a linha dessa posição
+        coluna_atual = posicao[1]  # pega a coluna dessa posição
+
+        # AS LINHAS E COLUNAS DO TABULEIRO VÃO DE 0 ATÉ 9
+        if linha_atual < 0 or linha_atual >= 10:
+            return False # para que nenhuma parte do navio fique fora das linhas
+
+        if coluna_atual < 0 or coluna_atual >= 10:
+            return False  # para que nenhuma parte do navio fique fora das colunas
+
+        for nome_navio in frota:  # percorre os tipos de embarcação existentes
+            for navio in frota[nome_navio]:  # vai percorrer todos os navios já posicionados
+                if posicao in navio:  # vai verificar se essa posição já está ocupada
+                    return False  # o novo navio sobreporia outro navio 
+
+    return True  # vai devolver todas as posições que estão dentro do tabuleiro e estão livres
