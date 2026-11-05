@@ -1,3 +1,4 @@
+import random
 from funcoes import (posicao_valida, preenche_frota, posiciona_frota, monta_tabuleiros, faz_jogada, afundados)
 
 # cada tipo de navio tem uma lista no formato [tamanho, quantidade]
@@ -108,3 +109,32 @@ while jogando:
     if afundou == total_navios:
         print("Parabéns! Você derrubou todos os navios do seu oponente!")
         jogando = False  # encerra sem pedir outro ataque
+
+    else:  # o oponente só joga se o jogador ainda não tiver vencido
+        linha_oponente = random.randint(0, 9)  # sorteia uma linha entre 0 e 9
+        coluna_oponente = random.randint(0, 9)  # sorteia uma coluna entre 0 e 9
+
+        while tabuleiro_jogador[linha_oponente][coluna_oponente] in ["X", "-"]:  # se a casa já foi atacada, sorteia novamente as duas coordenadas
+
+            linha_oponente = random.randint(0, 9)
+            coluna_oponente = random.randint(0, 9)
+
+        print(
+            f"Seu oponente está atacando na linha {linha_oponente} "
+            f"e coluna {coluna_oponente}"
+        )  # informa a posição escolhida depois de garantir que ela é inédita
+
+        tabuleiro_jogador = faz_jogada(
+            tabuleiro_jogador, linha_oponente, coluna_oponente
+        )  # atualiza o tabuleiro do jogador: marca "X" para acerto ou "-" para água
+
+
+        total_navios_jogador = 0  # quantos oponentes precisa afundar
+
+        for nome_navio in frota:
+            total_navios_jogador += len(frota[nome_navio])
+
+        if afundados(frota, tabuleiro_jogador) == total_navios_jogador:  # vai verifica se todos os navios do jogador foram afundados
+
+            print("Xi! O oponente derrubou toda a sua frota =(")
+            jogando = False  # vai encerrar a partida quando o oponente vence
